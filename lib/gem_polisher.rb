@@ -24,10 +24,18 @@ class GemPolisher
     define_rake_tasks
   end
 
-  private
+  def gemspec_path
+    Dir.glob('*.gemspec').first
+  end
 
-  # Returns Gem name.
+  # Returns Gem name from #gemspec_path file.
   def gem_name
+    gemspec_path.gsub(/\.gemspec$/, '')
+  end
+
+  # Argument to be used for #require for the gem.
+  def gem_require
+    gem_name.downcase.gsub(/-/, '/')
   end
 
   # Returns String with name of Gem's main constant, calculated from #gem_name, following conventions at: http://guides.rubygems.org/name-your-gem/
