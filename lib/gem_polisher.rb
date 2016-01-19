@@ -53,7 +53,7 @@ class GemPolisher
   # Defire Rake tasks
   def define_rake_tasks
     namespace :gem do
-      desc 'Tag, build and publish a Gem; type can be major, minor or patch.'
+      desc 'Update bundle, run tests, increment version, build and publish Gem; type can be major, minor or patch.'
       task :release, [:type] => [:test] do |t, args|
         raise 'TODO'
       end
