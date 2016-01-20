@@ -3,11 +3,6 @@ require 'rake'
 require 'fileutils'
 
 RSpec.describe GemPolisher do
-  # let(:gem_main_constant_s) { 'Net::Http::DigestAuth' }
-  # before(:example) do
-  #   allow_any_instance_of(described_class)
-  #     .to receive(:default_gem_main_constant_s).and_return(gem_main_constant_s)
-  # end
   around(:example) do |example|
     old_bundle_gemfile = ENV["BUNDLE_GEMFILE"]
     ENV["BUNDLE_GEMFILE"] = 'Gemfile'
