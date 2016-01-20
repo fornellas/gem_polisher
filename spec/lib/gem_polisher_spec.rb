@@ -27,7 +27,7 @@ RSpec.describe GemPolisher do
         let(:initialize_value) { 'gem inabox' }
         include_examples :initialize_attributes
       end
-      context 'GemInfo' do
+      context '#gem_info' do
         let(:opts) { {} }
         subject { described_class.new(opts) }
         let(:gem_info) { double('GemInfo') }
@@ -37,7 +37,7 @@ RSpec.describe GemPolisher do
             .with(opts)
             .once
             .and_return(gem_info)
-          expect(subject.instance_variable_get(:@gem_info)).to eq(gem_info)
+          expect(subject.gem_info).to eq(gem_info)
         end
       end
     end
@@ -45,9 +45,14 @@ RSpec.describe GemPolisher do
       before(:example) do
         Rake.application = Rake::Application.new
       end
-      it 'creates gem:release[type]' do
-        described_class.new
-        expect(Rake::Task['gem:release']).to be_a(Rake::Task)
+      it 'creates tasks' do
+        expect do
+          described_class.new
+        end.to change{Rake::Task.tasks.empty?}.from(true).to(false)
+      end
+      it 'calls #define_rake_tasks' do
+        expect_any_instance_of(described_class).to receive(:define_rake_tasks)
+        subject
       end
     end
     context 'without bundler environment' do
@@ -64,7 +69,7 @@ RSpec.describe GemPolisher do
       end
     end
   end
-  context '@gem_info delegators' do
+  context '#gem_info delegators' do
     let(:gem_info) { double('GemInfo') }
     before(:example) do
       expect(GemPolisher::GemInfo)
@@ -84,15 +89,11 @@ RSpec.describe GemPolisher do
       end
     end
   end
-  context 'Rake tasks' do
-    context 'gem:release[type]' do
-      xit 'does correct workflow' do
-        # ensure_git_clean_master
-        # bundle_update
-        # Rake::Task[:'test'].invoke
-        # inc_version
-        # gem_build
-        # gem_publish
+  context '#define_rake_tasks' do
+    it 'initializes all task classes' do
+      described_class.constants.keep_if{|c| c.match(/.Task$/)}.each do |constant|
+        expect(described_class.const_get(constant)).to receive(:new).with(subject)
+        subject.send(:define_rake_tasks)
       end
     end
   end

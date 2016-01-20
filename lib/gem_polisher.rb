@@ -1,13 +1,19 @@
 require 'rake'
 require_relative 'gem_polisher/gem_info'
+require_relative 'gem_polisher/task'
+Dir.glob(File.dirname(__FILE__)+ '/gem_polisher/*_task.rb').each do |task|
+  require_relative task
+end
 
 # Provides Rake tasks to assist Ruby Gem development workflow.
 class GemPolisher
 
-  include Rake::DSL
+  # GemInfo instance
+  attr_reader :gem_info
+
   extend Forwardable
 
-  def_delegators :@gem_info,
+  def_delegators :gem_info,
     :gemspec_path,
     :gem_name,
     :gem_require,
@@ -33,11 +39,10 @@ class GemPolisher
 
   # Defire Rake tasks
   def define_rake_tasks
-    namespace :gem do
-      desc 'Update bundle, run tests, increment version, build and publish Gem; type can be major, minor or patch.'
-      task :release, [:type] => [:test] do |t, args|
-        raise 'TODO'
-      end
+    # For each *Task class...
+    self.class.constants.keep_if{|c| c.match(/.Task$/)}.each do |constant|
+      # ...initialize it
+      self.class.const_get(constant).send(:new, self)
     end
   end
 
