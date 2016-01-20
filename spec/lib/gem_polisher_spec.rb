@@ -45,10 +45,17 @@ RSpec.describe GemPolisher do
       before(:example) do
         Rake.application = Rake::Application.new
       end
+      subject { described_class.new }
       it 'creates tasks' do
         expect do
-          described_class.new
+          subject
         end.to change{Rake::Task.tasks.empty?}.from(true).to(false)
+      end
+      it 'sets #rake_tasks' do
+        expect(subject.rake_tasks.length).to eq(Rake::Task.tasks.length)
+        subject.rake_tasks.each do |task|
+          expect(task).to be_a(GemPolisher::Task)
+        end
       end
       it 'calls #define_rake_tasks' do
         expect_any_instance_of(described_class).to receive(:define_rake_tasks)
@@ -93,8 +100,8 @@ RSpec.describe GemPolisher do
     it 'initializes all task classes' do
       described_class.constants.keep_if{|c| c.match(/.Task$/)}.each do |constant|
         expect(described_class.const_get(constant)).to receive(:new).with(subject)
-        subject.send(:define_rake_tasks)
       end
+      subject.send(:define_rake_tasks)
     end
   end
 end

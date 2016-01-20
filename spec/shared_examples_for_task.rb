@@ -1,8 +1,10 @@
-require 'gem_polisher'
-
-RSpec.shared_examples :task  do
-  let(:gem_polisher) { double('gem_polisher') }
-  subject { described_class.new(gem_polisher) }
+RSpec.shared_examples :task_examples  do
+  let(:gem_polisher) { GemPolisher.new }
+  subject { gem_polisher.rake_tasks.select{|t| t.class == described_class}.first }
+  before(:example) do
+    Rake.application = Rake::Application.new
+    subject
+  end
   it { is_expected.to have_attributes(gem_polisher: gem_polisher) }
   it 'delegates #gem_info to #gem_polisher' do
     expect(gem_polisher).to receive(:gem_info)

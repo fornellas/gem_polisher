@@ -22,6 +22,9 @@ class GemPolisher
   # Command used to publish Gem.
   attr_reader :gem_publish_command
 
+  # Hash with all created Rake tasks
+  attr_reader :rake_tasks
+
   # This should be called from within Rakefile. It will create necessary Rake tasks.
   # Optionally, a Hash can be passed with:
   # +:gem_publish_command+:: Command to use to publish your gem (eg. "gem inabox"). Default: "gem push".
@@ -32,6 +35,7 @@ class GemPolisher
     end
     @gem_info = GemInfo.new(opts)
     @gem_publish_command = opts.fetch(:gem_publish_command) { 'gem push' }
+    @rake_tasks = []
     define_rake_tasks
   end
 
@@ -42,7 +46,7 @@ class GemPolisher
     # For each *Task class...
     self.class.constants.keep_if{|c| c.match(/.Task$/)}.each do |constant|
       # ...initialize it
-      self.class.const_get(constant).send(:new, self)
+      @rake_tasks << self.class.const_get(constant).send(:new, self)
     end
   end
 

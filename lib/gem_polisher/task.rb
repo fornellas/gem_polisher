@@ -15,6 +15,12 @@ class GemPolisher
     # Receive a GemPolisher instance
     def initialize gem_polisher
       @gem_polisher = gem_polisher
+      create_task
+    end
+
+    # Creates Rake task (abstract method)
+    def create_task
+      raise "Not implemented!"
     end
 
   end
