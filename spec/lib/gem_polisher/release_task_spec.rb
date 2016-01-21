@@ -4,7 +4,7 @@ require 'fileutils'
 require 'shellwords'
 require 'shared_context_for_test_gem'
 
-RSpec.fdescribe GemPolisher::ReleaseTask  do
+RSpec.describe GemPolisher::ReleaseTask  do
   include_context :test_gem
   # Execute command, and return its stdout
   def run command
