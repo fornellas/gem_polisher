@@ -6,12 +6,6 @@ require 'shared_context_for_test_gem'
 
 RSpec.describe GemPolisher::ReleaseTask  do
   include_context :test_gem
-  # Execute command, and return its stdout
-  def run command
-    output = `#{command}`
-    raise "#{command}: non zero exit!" unless $?.exitstatus == 0
-    output
-  end
   include_examples :task_examples
   context 'gem:release[type]' do
     it 'does correct workflow' do

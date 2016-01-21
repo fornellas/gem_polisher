@@ -1,8 +1,14 @@
 RSpec.shared_context :test_gem do
   let(:gem_name) { 'test_gem' }
-  let(:version_str) { '1.2.3' }
+  let(:gem_version_str) { '1.2.3' }
   let(:gemspec_path) { "#{gem_name}.gemspec" }
   let(:fixtures_path) { File.dirname(__FILE__) + "/fixtures" }
+  # Execute command, and return its stdout
+  def run command
+    output = `#{command}`
+    raise "#{command}: non zero exit!" unless $?.exitstatus == 0
+    output
+  end
   # Execute given block inside given path, ensuring that it chdir to original path
   def inside_path path
     original_pwd = Dir.pwd
