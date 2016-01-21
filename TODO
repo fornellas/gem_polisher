@@ -1,3 +1,4 @@
+Properly integrate Agita Gem (Gemfile, gemspec)
 More tasks, if gem available:
   RDoc
   RSpec
