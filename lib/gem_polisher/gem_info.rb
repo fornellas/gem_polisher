@@ -51,5 +51,10 @@ class GemPolisher
         const
       end
     end
+
+    # Returns Gem::Specification object. If #gemfile is nil, returns nil.
+    def gem_specification
+      eval(File.open(gemspec_path, 'r').read, nil, gemspec_path)
+    end
   end
 end

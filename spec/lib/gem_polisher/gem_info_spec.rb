@@ -1,4 +1,5 @@
 require 'gem_polisher/gem_info'
+require 'shared_context_for_test_gem'
 
 RSpec.describe GemPolisher::GemInfo do
   let(:gem_main_constant_s) { 'Net::Http::DigestAuth' }
@@ -85,6 +86,19 @@ RSpec.describe GemPolisher::GemInfo do
       ['net-http-digest_auth', 'net/http/digest_auth', 'Net::Http::DigestAuth'],
     ].each do |values|
       include_examples :gem_other_names, values
+    end
+  end
+  describe '#gem_specification' do
+    include_context :test_gem
+    it 'returns Gem::Specification object' do
+      expect(subject.gem_specification).to be_a(Gem::Specification)
+    end
+    it 'extracts attributes' do
+      expect(subject.gem_specification)
+        .to have_attributes(
+          name: gem_name,
+          version: Gem::Version.new(gem_version_str),
+        )
     end
   end
 end
