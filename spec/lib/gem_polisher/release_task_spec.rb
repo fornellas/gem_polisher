@@ -83,7 +83,61 @@ RSpec.describe GemPolisher::ReleaseTask  do
         end
       end
       context '#bundle_update' do
-        it 'works'
+        before(:example) do
+          allow(subject).to receive(:exec)
+          allow(subject).to receive(:run)
+        end
+        it 'calls bundle update' do
+          expect(subject).to receive(:run).with('bundle update')
+          subject.send(:bundle_update)
+        end
+        context 'Gemfile.lock updated' do
+          def mock_program_name path
+            original_program_name = $PROGRAM_NAME
+            begin
+              $PROGRAM_NAME = path
+              yield
+            ensure
+              $PROGRAM_NAME = original_program_name
+            end
+          end
+          around(:example) do |example|
+            mock_program_name('/usr/bin/rake') do
+              example.call
+            end
+          end
+          before(:example) do
+            expect(subject).to receive(:run).with('bundle update') do
+              File.open('Gemfile.lock', 'w'){|io| io.write('new content')}
+            end
+          end
+          context 'Not started via rake binary' do
+            around(:example) do |example|
+              mock_program_name('/usr/bin/not_rake') do
+                example.call
+              end
+            end
+            it 'raises' do
+              expect do
+                subject.send(:bundle_update)
+              end.to raise_error(RuntimeError)
+            end
+          end
+          it 'commits it' do
+            expect(run('git status --porcelain Gemfile.lock')).to be_empty
+            subject.send(:bundle_update)
+          end
+          context 'reloading bundle' do
+            let(:probe_argv) { ['arg1', 'arg2'] }
+            before(:example) do
+              stub_const('ARGV', probe_argv)
+            end
+            it 'calls Kernel#exec with same arguments' do
+              expect(subject).to receive(:exec).with('bundle', 'exec', 'rake', *ARGV)
+              subject.send(:bundle_update)
+            end
+          end
+        end
       end
       context '#inc_version' do
         it 'works'

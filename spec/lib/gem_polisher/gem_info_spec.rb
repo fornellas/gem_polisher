@@ -21,7 +21,7 @@ RSpec.describe GemPolisher::GemInfo do
       end
     end
   end
-  fdescribe '#gemspec_path' do
+  describe '#gemspec_path' do
     let(:gemspec_path) { 'abc.gemspec' }
     around(:example) do |example|
       old_dir = Dir.pwd

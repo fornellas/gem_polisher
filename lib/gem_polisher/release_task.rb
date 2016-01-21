@@ -23,14 +23,22 @@ class GemPolisher
 
     private
 
+    # :section: Steps
+
     # Make sure we are at master, updated and clean.
     def git_ensure_master_updated_clean
       agita.ensure_master_updated_clean
     end
 
-    #
+    # bundle update
     def bundle_update
-      ;
+      run 'bundle update'
+      if agita.commit('Gemfile.lock', 'Updated Bundle')
+        unless File.basename($PROGRAM_NAME) == 'rake'
+          raise RuntimeError.new("Not executed by rake executable!")
+        end
+        exec 'bundle', *['exec', 'rake', *ARGV]
+      end
     end
 
     #
@@ -46,6 +54,14 @@ class GemPolisher
     #
     def gem_publish
       ;
+    end
+
+    # :section: Helpers
+
+    def run command
+      output = `#{command}`
+      raise "#{command} returned non-zero status:\n#{output}" unless $?.exitstatus == 0
+      output
     end
 
   end
