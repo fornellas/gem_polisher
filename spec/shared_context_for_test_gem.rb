@@ -1,5 +1,6 @@
 RSpec.shared_context :test_gem do
   let(:gem_name) { 'test_gem' }
+  let(:gem_main_constant_s) { 'TestGem' }
   let(:gem_version_str) { '1.2.3' }
   let(:gemspec_path) { "#{gem_name}.gemspec" }
   let(:fixtures_path) { File.dirname(__FILE__) + "/fixtures" }
@@ -28,6 +29,11 @@ RSpec.shared_context :test_gem do
       run 'git config receive.denyCurrentBranch ignore'
     end
     run "git clone --quiet -l #{remote_path}/.git #{Shellwords.escape(repo_path)} 2>/dev/null"
+  end
+  before(:example) do
+    if Object.const_defined? gem_main_constant_s
+      Object.send(:remove_const, gem_main_constant_s)
+    end
   end
   # Set up fake gem
   around(:example) do |example|

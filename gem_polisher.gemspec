@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.rdoc_options     = %w{--main README.md lib/ README.md}
   s.add_runtime_dependency 'agita', '~>0.0'
   s.add_runtime_dependency 'gli', '~>2.13', '>=2.13.4'
+  s.add_runtime_dependency 'semantic', '~>1.4', '>=1.4.1'
   s.add_development_dependency 'rspec', '~>3.4'
   s.add_development_dependency 'simplecov', '~>0.11', '>=0.11.1'
 end

@@ -101,4 +101,13 @@ RSpec.describe GemPolisher::GemInfo do
         )
     end
   end
+  describe '#semantic_version' do
+    include_context :test_gem
+    it 'returns a Semantic::Version' do
+      expect(subject.semantic_version).to be_a(Semantic::Version)
+    end
+    it 'returns correct version' do
+      expect(subject.semantic_version.to_s).to eq(gem_version_str)
+    end
+  end
 end

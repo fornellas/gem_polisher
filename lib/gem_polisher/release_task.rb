@@ -11,6 +11,7 @@ class GemPolisher
       namespace :gem do
         desc 'Update bundle, run tests, increment version, build and publish Gem; type can be major, minor or patch.'
         task :release, [:type] do |t, args|
+          @type = args[:type]
           git_ensure_master_updated_clean
           bundle_update
           Rake::Task[:test].invoke
@@ -41,9 +42,12 @@ class GemPolisher
       end
     end
 
-    #
+    # Increment
     def inc_version
-      ;
+      # calculate new version based on @type
+      # change version.rb file
+      # bundle install (to update Gemfile.lock)
+      # commit version.rb and Gemfile.lock files
     end
 
     #

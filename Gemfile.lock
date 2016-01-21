@@ -9,6 +9,7 @@ PATH
     gem_polisher (0.0.0)
       agita (~> 0.0)
       gli (~> 2.13, >= 2.13.4)
+      semantic (~> 1.4, >= 1.4.1)
 
 GEM
   remote: https://rubygems.org/
@@ -30,6 +31,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
+    semantic (1.4.1)
     simplecov (0.11.1)
       docile (~> 1.1.0)
       json (~> 1.8)

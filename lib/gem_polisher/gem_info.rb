@@ -1,3 +1,5 @@
+require 'semantic'
+
 class GemPolisher
   # Extracts information from Gem at current directory.
   class GemInfo
@@ -55,6 +57,11 @@ class GemPolisher
     # Returns Gem::Specification object. If #gemfile is nil, returns nil.
     def gem_specification
       eval(File.open(gemspec_path, 'r').read, nil, gemspec_path)
+    end
+
+    # Returns a Semantic::Version instance
+    def semantic_version
+      Semantic::Version.new(gem_specification.version.to_s)
     end
   end
 end
