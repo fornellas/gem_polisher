@@ -6,7 +6,7 @@ class GemPolisher
       namespace :gem do
         desc 'Update bundle, run tests, increment version, build and publish Gem; type can be major, minor or patch.'
         task :release, [:type] do |t, args|
-          ensure_git_clean_master
+          git_ensure_master_updated_clean
           bundle_update
           Rake::Task[:test].invoke
           inc_version
@@ -19,7 +19,7 @@ class GemPolisher
     private
 
     #
-    def ensure_git_clean_master
+    def git_ensure_master_updated_clean
       ;
     end
 

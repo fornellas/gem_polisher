@@ -1,7 +1,13 @@
 PATH
+  remote: ../agita
+  specs:
+    agita (0.0.0)
+
+PATH
   remote: .
   specs:
     gem_polisher (0.0.0)
+      agita (~> 0.0)
       gli (~> 2.13, >= 2.13.4)
 
 GEM
@@ -34,6 +40,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  agita!
   gem_polisher!
   rspec (~> 3.4)
   simplecov (~> 0.11, >= 0.11.1)

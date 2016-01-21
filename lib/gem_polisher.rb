@@ -1,5 +1,5 @@
 require 'rake'
-require_relative 'gem_polisher/agita'
+require 'agita'
 require_relative 'gem_polisher/gem_info'
 require_relative 'gem_polisher/task'
 Dir.glob(File.dirname(__FILE__)+ '/gem_polisher/*_task.rb').each do |task|

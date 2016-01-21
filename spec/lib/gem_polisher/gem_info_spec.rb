@@ -21,19 +21,30 @@ RSpec.describe GemPolisher::GemInfo do
       end
     end
   end
-  describe '#gemspec_path' do
+  fdescribe '#gemspec_path' do
     let(:gemspec_path) { 'abc.gemspec' }
     around(:example) do |example|
       old_dir = Dir.pwd
       Dir.mktmpdir do |tmpdir|
         Dir.chdir(tmpdir)
-        FileUtils.touch(gemspec_path)
         example.call
       end
       Dir.chdir(old_dir)
     end
-    it 'returns gemspec path' do
-      expect(subject).to have_attributes(gemspec_path: gemspec_path)
+    context 'gemspec exists' do
+      before(:example) do
+        FileUtils.touch(gemspec_path)
+      end
+      it 'returns gemspec path' do
+        expect(subject).to have_attributes(gemspec_path: gemspec_path)
+      end
+    end
+    context 'gemspec does not exist' do
+      it 'raises' do
+        expect do
+          subject.gemspec_path
+        end.to raise_error(Errno::ENOENT)
+      end
     end
   end
   describe '#gem_name' do

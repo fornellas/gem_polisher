@@ -15,7 +15,11 @@ class GemPolisher
 
     # Return path to .gemspec file.
     def gemspec_path
-      Dir.glob('*.gemspec').first
+      path = Dir.glob('*.gemspec').first
+      unless path
+        raise Errno::ENOENT.new('*.gemspec not found')
+      end
+      path
     end
 
     # Returns Gem name from #gemspec_path file.
