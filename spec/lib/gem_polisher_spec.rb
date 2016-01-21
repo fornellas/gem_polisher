@@ -27,6 +27,11 @@ RSpec.describe GemPolisher do
         let(:initialize_value) { 'gem inabox' }
         include_examples :initialize_attributes
       end
+      context '#agita' do
+        it 'initializes it' do
+          expect(subject.agita).to be_a(GemPolisher::Agita)
+        end
+      end
       context '#gem_info' do
         let(:opts) { {} }
         subject { described_class.new(opts) }

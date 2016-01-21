@@ -1,4 +1,5 @@
 require 'rake'
+require_relative 'gem_polisher/agita'
 require_relative 'gem_polisher/gem_info'
 require_relative 'gem_polisher/task'
 Dir.glob(File.dirname(__FILE__)+ '/gem_polisher/*_task.rb').each do |task|
@@ -8,10 +9,10 @@ end
 # Provides Rake tasks to assist Ruby Gem development workflow.
 class GemPolisher
 
+  extend Forwardable
+
   # GemInfo instance
   attr_reader :gem_info
-
-  extend Forwardable
 
   def_delegators :gem_info,
     :gemspec_path,
@@ -25,6 +26,10 @@ class GemPolisher
   # Hash with all created Rake tasks
   attr_reader :rake_tasks
 
+  # Agita instance
+  attr_reader :agita
+
+
   # This should be called from within Rakefile. It will create necessary Rake tasks.
   # Optionally, a Hash can be passed with:
   # +:gem_publish_command+:: Command to use to publish your gem (eg. "gem inabox"). Default: "gem push".
@@ -35,6 +40,7 @@ class GemPolisher
     end
     @gem_info = GemInfo.new(opts)
     @gem_publish_command = opts.fetch(:gem_publish_command) { 'gem push' }
+    @agita = Agita.new
     @rake_tasks = []
     define_rake_tasks
   end
