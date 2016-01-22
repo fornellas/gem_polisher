@@ -45,7 +45,7 @@ PLATFORMS
 DEPENDENCIES
   agita!
   gem_polisher!
-  rake (~> 10.0)
+  rake (~> 10.4)
   rspec (~> 3.4)
   simplecov (~> 0.11, >= 0.11.1)
 

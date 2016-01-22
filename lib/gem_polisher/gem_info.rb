@@ -54,7 +54,13 @@ class GemPolisher
       end
     end
 
-    # Returns Gem::Specification object. If #gemfile is nil, returns nil.
+    # Returns value of Gem's main constant.
+    def gem_main_constant
+      gem_specification # avoid NameError if not loaded.
+      Object.const_get(gem_main_constant_s)
+    end
+
+    # Returns Gem::Specification object.
     def gem_specification
       eval(File.open(gemspec_path, 'r').read, nil, gemspec_path)
     end
@@ -62,6 +68,25 @@ class GemPolisher
     # Returns a Semantic::Version instance
     def semantic_version
       Semantic::Version.new(gem_specification.version.to_s)
+    end
+
+    # Path to Gem's version.rb
+    def gem_version_rb
+      "lib/#{gem_name}/version.rb"
+    end
+
+    # Increment version at "lib/#{gem_name}/version.rb".
+    def inc_version! type
+      new_version = semantic_version.increment!(type)
+      const_class = gem_main_constant.class.to_s.downcase
+      const_name = gem_main_constant
+      ancestor_classes = gem_main_constant.ancestors.keep_if{|a| a.class == Class}
+      parent_class = ( parent = ancestor_classes[1] ) == Object ? nil : parent
+      File.open(gem_version_rb, 'w') do |io|
+        io.puts "#{const_class} #{const_name}#{" < #{parent_class}" if parent_class}"
+        io.puts "  VERSION = '#{new_version.to_s}'"
+        io.puts "end"
+      end
     end
   end
 end

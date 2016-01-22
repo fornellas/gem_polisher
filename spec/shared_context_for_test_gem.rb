@@ -1,7 +1,11 @@
 RSpec.shared_context :test_gem do
   let(:gem_name) { 'test_gem' }
   let(:gem_main_constant_s) { 'TestGem' }
+  let(:gem_main_constant) { Object.const_get(gem_main_constant_s) }
   let(:gem_version_str) { '1.2.3' }
+  let(:gem_version_next_major_str) { '2.0.0' }
+  let(:gem_version_next_minor_str) { '1.3.0' }
+  let(:gem_version_next_patch_str) { '1.2.4' }
   let(:gemspec_path) { "#{gem_name}.gemspec" }
   let(:fixtures_path) { File.dirname(__FILE__) + "/fixtures" }
   # Execute command, and return its stdout
