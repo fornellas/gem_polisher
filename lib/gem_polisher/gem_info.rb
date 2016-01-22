@@ -62,6 +62,13 @@ class GemPolisher
 
     # Returns Gem::Specification object.
     def gem_specification
+      # Avoids warning over redefined VERSION constant
+      version_const_str = '::' + gem_main_constant_s + "::VERSION"
+      if Object.const_defined?(version_const_str)
+        Object.const_get(gem_main_constant_s).send(:remove_const, :VERSION)
+      end
+      # Allow #gem_version_rb to be reloaded after changes
+      $LOADED_FEATURES.delete_if{|f| f == File.absolute_path(gem_version_rb)}
       eval(File.open(gemspec_path, 'r').read, nil, gemspec_path)
     end
 

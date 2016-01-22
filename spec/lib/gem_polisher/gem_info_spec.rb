@@ -106,6 +106,7 @@ RSpec.describe GemPolisher::GemInfo do
           version: Gem::Version.new(gem_version_str),
         )
     end
+    it 'reloads version when changed'
   end
   context '#semantic_version' do
     include_context :test_gem
@@ -138,7 +139,6 @@ RSpec.describe GemPolisher::GemInfo do
         [:major, :minor, :patch].each do |type|
           it ":#{type}" do
             subject.inc_version!(type)
-            # FIXME #gem_specification is not reloading
             expect(subject.semantic_version.to_s).to eq(send(:"gem_version_next_#{type}_str"))
           end
           it 'does not change main constant class and parent' do
@@ -160,17 +160,17 @@ RSpec.describe GemPolisher::GemInfo do
       end
       include_examples :main_class
     end
-    # context 'class main constant' do
-    #   before(:example) do
-    #     # TODO
-    #   end
-    #   include_examples :main_class
-    # end
-    # context 'inherited class main constant' do
-    #   before(:example) do
-    #     # TODO
-    #   end
-    #   include_examples :main_class
-    # end
+    context 'class main constant' do
+      before(:example) do
+        # TODO
+      end
+      include_examples :main_class
+    end
+    context 'inherited class main constant' do
+      before(:example) do
+        # TODO
+      end
+      include_examples :main_class
+    end
   end
 end
