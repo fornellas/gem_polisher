@@ -7,6 +7,7 @@ RSpec.shared_context :test_gem do
   let(:gem_version_next_minor_str) { '1.3.0' }
   let(:gem_version_next_patch_str) { '1.2.4' }
   let(:gemspec_path) { "#{gem_name}.gemspec" }
+  let(:version_rb) { "lib/#{gem_name}/version.rb" }
   let(:fixtures_path) { File.dirname(__FILE__) + "/fixtures" }
   # Execute command, and return its stdout
   def run command

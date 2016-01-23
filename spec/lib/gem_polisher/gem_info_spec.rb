@@ -106,7 +106,16 @@ RSpec.describe GemPolisher::GemInfo do
           version: Gem::Version.new(gem_version_str),
         )
     end
-    it 'reloads version when changed'
+    it 'reloads version when changed' do
+      Object.send(:remove_const, gem_main_constant_s) rescue NameError
+      $LOADED_FEATURES.delete_if{|f| f == File.absolute_path(version_rb) }
+      subject.gem_specification
+      File.open(version_rb, 'w'){|io| io.write("")}
+      Object.send(:remove_const, gem_main_constant_s) rescue NameError
+      expect do
+        subject.gem_specification
+      end.to raise_error(NameError)
+    end
   end
   context '#semantic_version' do
     include_context :test_gem
@@ -117,11 +126,10 @@ RSpec.describe GemPolisher::GemInfo do
       expect(subject.semantic_version.to_s).to eq(gem_version_str)
     end
   end
-  fcontext '#inc_version!' do
+  context '#inc_version!' do
     shared_examples :main_class do
       include_context :test_gem
       context 'type' do
-        let(:version_rb) { "lib/#{gem_name}/version.rb" }
         def fetch_data
           gem_const = Object.const_get(gem_main_constant_s)
           [
