@@ -164,19 +164,37 @@ RSpec.describe GemPolisher::GemInfo do
     end
     context 'module main constant' do
       before(:example) do
-        # TODO
+        File.open(version_rb, 'w') do |io|
+          io.write "
+            module #{gem_main_constant_s}
+              VERSION = '#{gem_version_str}'
+            end
+          "
+        end
       end
       include_examples :main_class
     end
     context 'class main constant' do
       before(:example) do
-        # TODO
+        File.open(version_rb, 'w') do |io|
+          io.write "
+          class #{gem_main_constant_s}
+            VERSION = '#{gem_version_str}'
+          end
+          "
+        end
       end
       include_examples :main_class
     end
     context 'inherited class main constant' do
       before(:example) do
-        # TODO
+        File.open(version_rb, 'w') do |io|
+          io.write "
+          class #{gem_main_constant_s} < String
+            VERSION = '#{gem_version_str}'
+          end
+          "
+        end
       end
       include_examples :main_class
     end
