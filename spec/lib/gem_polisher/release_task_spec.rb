@@ -95,8 +95,42 @@ RSpec.describe GemPolisher::ReleaseTask  do
         end
       end
       context '#inc_version' do
-        it 'increments version at version.rb'
-        it 'increments version at Gemfile.lock'
+        let(:type) { :minor }
+        let(:new_version) { gem_version_next_minor_str }
+        # Clean up environment to allow bundler to run
+        before(:example) do
+          allow_any_instance_of(described_class)
+            .to receive(:run)
+            .and_wrap_original do |m, *args, &block|
+              keys_to_remove = ENV.keys.grep(/^BUNDLE_/)
+              keys_to_remove << 'RUBYOPT'
+              keys_to_remove << 'RUBYLIB'
+              old_values = {}
+              keys_to_remove.each do |key|
+                old_values[key] = ENV[key]
+                ENV.delete(key)
+              end
+              m.call(*args, &block)
+              old_values.keys.each do |key|
+                ENV[key] = old_values[key]
+              end
+            end
+        end
+        it 'increments version at version.rb' do
+          expect do
+            subject.send(:inc_version, type)
+          end.to change {
+            File.open(version_rb).read.include?(new_version)
+          }.from(false).to(true)
+        end
+        it 'increments version at Gemfile.lock' do
+          expect do
+            subject.send(:inc_version, type)
+          end.to change {
+            File.open('Gemfile.lock').read.include?(new_version)
+          }.from(false).to(true)
+        end
+        it 'commits Gemfile.lock and version.rb'
         it 'creates version tag'
       end
       context '#gem_build' do

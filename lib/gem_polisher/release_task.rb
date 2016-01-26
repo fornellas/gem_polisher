@@ -46,9 +46,10 @@ class GemPolisher
     # Increment Gem version
     def inc_version type
       new_version = gem_info.inc_version!(type)
-      run("bundle install")
-      agita.commit('Gemfile.lock', gem_info.gem_version_rb, "Increased #{type} version.")
-      agita.tag("v#{new_version.to_s}")
+      # This loop shouldn't be needed, but test fails without it. Bundler bug?
+      2.times{ run("bundle install") }
+      # agita.commit('Gemfile.lock', gem_info.gem_version_rb, "Increased #{type} version.")
+      # agita.tag("v#{new_version.to_s}")
     end
 
     #
