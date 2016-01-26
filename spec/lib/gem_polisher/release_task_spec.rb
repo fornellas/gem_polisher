@@ -95,7 +95,9 @@ RSpec.describe GemPolisher::ReleaseTask  do
         end
       end
       context '#inc_version' do
-        it 'works'
+        it 'increments version at version.rb'
+        it 'increments version at Gemfile.lock'
+        it 'creates version tag'
       end
       context '#gem_build' do
         it 'works'

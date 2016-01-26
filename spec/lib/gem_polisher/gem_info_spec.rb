@@ -129,23 +129,23 @@ RSpec.describe GemPolisher::GemInfo do
   context '#inc_version!' do
     shared_examples :main_class do
       include_context :test_gem
-      context 'type' do
-        def fetch_data
-          gem_const = Object.const_get(gem_main_constant_s)
-          [
-            gem_const.class,
-            gem_const.ancestors.keep_if{|a| a.class == Class}[1],
-          ]
-        end
-        def remove_gem_main_const
-          Object.send(:remove_const, gem_main_constant_s) rescue NameError
-        end
-        def reload_version
-          remove_gem_main_const
-          load version_rb
-        end
-        [:major, :minor, :patch].each do |type|
-          it ":#{type}" do
+      def fetch_data
+        gem_const = Object.const_get(gem_main_constant_s)
+        [
+          gem_const.class,
+          gem_const.ancestors.keep_if{|a| a.class == Class}[1],
+        ]
+      end
+      def remove_gem_main_const
+        Object.send(:remove_const, gem_main_constant_s) rescue NameError
+      end
+      def reload_version
+        remove_gem_main_const
+        load version_rb
+      end
+      [:major, :minor, :patch].each do |type|
+        context "#{type}" do
+          it "increases #{type} version" do
             subject.inc_version!(type)
             expect(subject.semantic_version.to_s).to eq(send(:"gem_version_next_#{type}_str"))
           end
@@ -158,6 +158,11 @@ RSpec.describe GemPolisher::GemInfo do
             final_class, final_parent = fetch_data
             expect(final_class).to eq(original_class)
             expect(final_parent).to eq(original_parent)
+          end
+          it 'returns new version' do
+            new_version = subject.inc_version!(type)
+            expect(new_version).to be_a(Semantic::Version)
+            expect(new_version.to_s).to eq(send(:"gem_version_next_#{type}_str"))
           end
         end
       end

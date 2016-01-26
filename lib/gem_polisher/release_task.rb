@@ -45,9 +45,10 @@ class GemPolisher
 
     # Increment Gem version
     def inc_version type
-      gem_info.inc_version!(type)
-      # bundle install (to update Gemfile.lock)
-      # commit version.rb and Gemfile.lock files
+      new_version = gem_info.inc_version!(type)
+      run("bundle install")
+      agita.commit('Gemfile.lock', gem_info.gem_version_rb, "Increased #{type} version.")
+      agita.tag("v#{new_version.to_s}")
     end
 
     #

@@ -94,6 +94,7 @@ class GemPolisher
         io.puts "  VERSION = '#{new_version.to_s}'"
         io.puts "end"
       end
+      new_version
     end
   end
 end
