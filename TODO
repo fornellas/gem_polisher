@@ -1,3 +1,7 @@
+Rake tasks logging
+CLI
+  Creating new Gem projects
+  Integration with existing projects
 More tasks, if gem available:
   RDoc
   RSpec
