@@ -1,7 +1,12 @@
-Rake tasks logging
 CLI
   Creating new Gem projects
   Integration with existing projects
+TravisCI integration
+README.md
+  Badges
+  [![Build Status](https://travis-ci.org/fornellas/gem_polisher.svg?branch=master)](https://travis-ci.org/fornellas/gem_polisher)
+  [![Inline docs](http://inch-ci.org/github/fornellas/command_utils.svg?branch=master)](http://inch-ci.org/github/fornellas/command_utils)
+
 More tasks, if gem available:
   RDoc
   RSpec
