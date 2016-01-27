@@ -181,7 +181,7 @@ RSpec.describe GemPolisher::ReleaseTask  do
         before(:example) do
           FileUtils.touch(gem_path)
         end
-        fit 'calls gem_publish_command and deletes .gem' do
+        it 'calls gem_publish_command and deletes .gem' do
           expect(subject).to receive(:run)
             .with("#{gem_publish_command} #{gem_path}")
           expect{subject.send(:gem_publish)}
