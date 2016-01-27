@@ -1,6 +1,6 @@
 require 'rake'
 
-RSpec.fdescribe GemPolisher::Task do
+RSpec.describe GemPolisher::Task do
   let(:gem_polisher) { instance_double(GemPolisher) }
   subject { described_class.new(gem_polisher) }
   before(:example) do
