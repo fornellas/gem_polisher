@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.name             = 'gem_polisher'
   s.version          = GemPolisher::VERSION
   s.summary          = 'This Gem provides Rake tasks to assist Ruby Gem development workflow.'
-  s.description      = 'This Gem provides Rake tasks to assist Ruby Gem development workflow.'
+  s.description      = 'Easily create Rake tasks that mechanize Gem development workflow: Git integration, automatic semantic versioning, gem building and publishing.'
   s.email            = 'fabio.ornellas@gmail.com'
   s.homepage         = 'https://github.com/fornellas/gem_polisher'
   s.authors          = ['Fabio Pugliese Ornellas']
