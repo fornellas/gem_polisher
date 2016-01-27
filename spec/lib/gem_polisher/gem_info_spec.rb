@@ -146,8 +146,10 @@ RSpec.describe GemPolisher::GemInfo do
       [:major, :minor, :patch].each do |type|
         context "#{type}" do
           it "increases #{type} version" do
-            subject.inc_version!(type)
-            expect(subject.semantic_version.to_s).to eq(send(:"gem_version_next_#{type}_str"))
+            expect { subject.inc_version!(type) }
+              .to change{subject.semantic_version.to_s}
+              .from(gem_version_str)
+              .to(send(:"gem_version_next_#{type}_str"))
           end
           it 'does not change main constant class and parent' do
             reload_version
