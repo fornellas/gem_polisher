@@ -129,6 +129,14 @@ RSpec.describe GemPolisher::ReleaseTask  do
               end
             end
         end
+        # Semantic::Version#inc_version! does not work with String
+        it 'calls Semantic::Version#inc_version! with a Symbol' do
+          expect_any_instance_of(Semantic::Version)
+            .to receive(:increment!)
+            .with(kind_of(Symbol))
+            .and_call_original
+          subject.send(:inc_version, type)
+        end
         it 'increments version at version.rb' do
           expect do
             subject.send(:inc_version, type)

@@ -46,7 +46,7 @@ class GemPolisher
 
     # Increment Gem version
     def inc_version type
-      new_version = gem_info.inc_version!(type)
+      new_version = gem_info.inc_version!(type.to_sym)
       # This loop shouldn't be needed, but test fails without it. Bundler bug?
       2.times{ run("bundle install") }
       agita.commit("Increased #{type} version.", 'Gemfile.lock', gem_info.gem_version_rb)
