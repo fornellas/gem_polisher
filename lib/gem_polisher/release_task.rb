@@ -22,7 +22,7 @@ class GemPolisher
           step("Incrementing #{type} version") { inc_version(type) }
           step("Building Gem")                 { gem_build }
           step("Publishing Gem")               { gem_publish }
-          puts "Released #{gem_info.gem_name}-#{gem_info.new_version} successfully!"
+          puts "Released #{gem_info.gem_name}-#{gem_info.semantic_version} successfully!"
         end
       end
     end
