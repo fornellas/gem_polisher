@@ -14,12 +14,12 @@ class GemPolisher
         desc 'Update bundle, run tests, increment version, build and publish Gem; type can be major, minor or patch.'
         task :release, [:type] do |t, args|
           type = args[:type]
-          git_ensure_master_updated_clean
-          bundle_update
-          Rake::Task[:test].invoke
-          inc_version(type)
-          gem_build
-          gem_publish
+          step("Validating Git status")        { git_ensure_master_updated_clean }
+          step("Updating Bundle")              { bundle_update }
+          step("Running tests")                { Rake::Task[:test].invoke }
+          step("Incrementing #{type} version") { inc_version(type) }
+          step("Building Gem")                 { gem_build }
+          step("Publishing Gem")               { gem_publish }
         end
       end
     end

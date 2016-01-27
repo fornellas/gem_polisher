@@ -8,14 +8,27 @@ RSpec.describe GemPolisher::ReleaseTask  do
   include_context :test_gem
   include_examples :task_examples
   context 'gem:release[type]' do
-    it 'does correct workflow' do
-      expect(subject).to receive(:git_ensure_master_updated_clean).ordered
-      expect(subject).to receive(:bundle_update).ordered
-      expect(Rake::Task[:test]).to receive(:invoke).ordered
-      expect(subject).to receive(:inc_version).ordered
-      expect(subject).to receive(:gem_build).ordered
-      expect(subject).to receive(:gem_publish).ordered
-      Rake::Task['gem:release'].invoke
+    context 'workflow' do
+      let(:type) { 'minor' }
+      # Silent #step
+      around(:example) do |example|
+        original_stdout = STDOUT.clone
+        STDOUT.reopen(File.open('/dev/null', 'w'))
+        begin
+          example.call
+        ensure
+          STDOUT.reopen(original_stdout)
+        end
+      end
+      it 'does correct workflow' do
+        expect(subject).to receive(:git_ensure_master_updated_clean).ordered
+        expect(subject).to receive(:bundle_update).ordered
+        expect(Rake::Task[:test]).to receive(:invoke).ordered
+        expect(subject).to receive(:inc_version).with(type).ordered
+        expect(subject).to receive(:gem_build).ordered
+        expect(subject).to receive(:gem_publish).ordered
+        Rake::Task['gem:release'].invoke(type)
+      end
     end
     context 'steps' do
       context '#git_ensure_master_updated_clean' do

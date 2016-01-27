@@ -23,5 +23,23 @@ class GemPolisher
       raise "Not implemented!"
     end
 
+    ANSI_RESET       = "\e[0m"
+    ANSI_ATTR_BRIGHT = "\e[1m"
+    ANSI_FG_GREEN    = "\e[32m"
+    ANSI_FG_RED      = "\e[31m"
+
+    # Log and execute block
+    def step name
+      print "#{ANSI_RESET}#{ANSI_ATTR_BRIGHT}#{name}...#{ANSI_RESET} "
+      begin
+        yield
+      rescue
+        puts "#{ANSI_RESET}#{ANSI_FG_RED}[FAIL]#{ANSI_RESET}"
+        raise $!
+      else
+        puts "#{ANSI_RESET}#{ANSI_FG_GREEN}[OK]#{ANSI_RESET}"
+      end
+    end
+
   end
 end
