@@ -1,29 +1,23 @@
 PATH
-  remote: ../agita
-  specs:
-    agita (0.0.0)
-
-PATH
   remote: .
   specs:
-    gem_polisher (0.0.0)
-      agita (~> 0.0)
-      gli (~> 2.13, >= 2.13.4)
+    gem_polisher (0.1.0)
+      agita (~> 0.1)
       semantic (~> 1.4, >= 1.4.1)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    agita (0.1.0)
     diff-lcs (1.2.5)
     docile (1.1.5)
-    gli (2.13.4)
     json (1.8.3)
     rake (10.5.0)
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
       rspec-mocks (~> 3.4.0)
-    rspec-core (3.4.1)
+    rspec-core (3.4.2)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -43,7 +37,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  agita!
   gem_polisher!
   rake (~> 10.4)
   rspec (~> 3.4)
