@@ -6,6 +6,7 @@
 [![Downloads](http://ruby-gem-downloads-badge.herokuapp.com/gem_polisher?type=total)](https://rubygems.org/gems/gem_polisher)
 
 * Home: [https://github.com/fornellas/gem_polisher/](https://github.com/fornellas/gem_polisher/)
+* RubyGems.org: [https://rubygems.org/gems/gem_polisher/](https://rubygems.org/gems/gem_polisher/)
 * Bugs: [https://github.com/fornellas/gem_polisher/issues](https://github.com/fornellas/gem_polisher/issues)
 
 ## Description
