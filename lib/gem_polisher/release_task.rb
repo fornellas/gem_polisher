@@ -6,7 +6,8 @@ class GemPolisher
 
     def_delegators :gem_polisher,
       :agita,
-      :gem_info
+      :gem_info,
+      :gem_publish_command
 
     def create_task
       namespace :gem do
@@ -35,7 +36,7 @@ class GemPolisher
     # bundle update
     def bundle_update
       run 'bundle update'
-      if agita.commit('Gemfile.lock', 'Updated Bundle')
+      if agita.commit('Updated Bundle', 'Gemfile.lock')
         unless File.basename($PROGRAM_NAME) == 'rake'
           raise RuntimeError.new("Not executed by rake executable!")
         end
@@ -48,18 +49,23 @@ class GemPolisher
       new_version = gem_info.inc_version!(type)
       # This loop shouldn't be needed, but test fails without it. Bundler bug?
       2.times{ run("bundle install") }
-      # agita.commit('Gemfile.lock', gem_info.gem_version_rb, "Increased #{type} version.")
-      # agita.tag("v#{new_version.to_s}")
+      agita.commit("Increased #{type} version.", 'Gemfile.lock', gem_info.gem_version_rb)
+      agita.tag("v#{new_version.to_s}", "New #{type} version.")
     end
 
-    #
+    # Build .gem
     def gem_build
-      ;
+      run("gem build #{gem_info.gem_name}.gemspec")
     end
 
-    #
+    # Path to .gem
+    def gem_path
+      "#{gem_info.gem_name}-#{gem_info.semantic_version}.gem"
+    end
+
+    # Publishes .gem with gem_publish_command
     def gem_publish
-      ;
+      run("#{gem_publish_command} #{Shellwords.escape(gem_path)}")
     end
 
     # :section: Helpers

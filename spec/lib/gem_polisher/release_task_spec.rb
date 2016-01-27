@@ -130,14 +130,38 @@ RSpec.describe GemPolisher::ReleaseTask  do
             File.open('Gemfile.lock').read.include?(new_version)
           }.from(false).to(true)
         end
-        it 'commits Gemfile.lock and version.rb'
-        it 'creates version tag'
+        it 'commits Gemfile.lock and version.rb' do
+          subject.send(:inc_version, type)
+          latest_diff = `git diff --word-diff=porcelain HEAD^`
+          expect(latest_diff).to match(/^diff .+\/Gemfile.lock$/)
+          expect(latest_diff).to match(/^diff .+\/version\.rb$/)
+          latest_message = `git log -1`
+          expect(latest_message).to include("Increased #{type} version.")
+        end
+        it 'creates version tag' do
+          expect do
+            subject.send(:inc_version, type)
+          end.to change{
+            `git tag`.match(/^v#{Regexp.escape(new_version)}$/)
+          }.from(be_falsey).to(be_truthy)
+        end
       end
       context '#gem_build' do
-        it 'works'
+        it 'builds .gem' do
+          expect do
+            subject.send(:gem_build)
+          end.to change{File.exist?("#{gem_name}-#{gem_version_str}.gem")}
+            .from(be_falsey).to(be_truthy)
+        end
       end
       context '#gem_publish' do
-        it 'works'
+        let(:gem_publish_command) { subject.gem_publish_command }
+        let(:gem_path) { "#{gem_name}-#{gem_version_str}.gem" }
+        it 'calls gem_publish_command' do
+          expect(subject).to receive(:run)
+            .with("#{gem_publish_command} #{gem_path}")
+          subject.send(:gem_publish)
+        end
       end
     end
   end
