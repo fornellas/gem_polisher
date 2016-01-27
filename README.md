@@ -19,6 +19,7 @@ This Gem provides Rake tasks to assist Ruby Gem development workflow.
   * Follow [already established naming conventions](http://guides.rubygems.org/name-your-gem/).
     * Tip: if you does not use strict camel casing (eg: RDoc and not Rdoc), see <tt>GemPolisher#initialize</tt>'s <tt>gem_main_constant_s</tt> option.
 * When creating your <tt>.gemspec</tt> file, point its <tt>version</tt> attribute to an external file. Eg:
+
 ```ruby
   require_relative 'lib/my/gem/with_long_name/version'
   Gem::Specification.new do |s|
@@ -26,7 +27,9 @@ This Gem provides Rake tasks to assist Ruby Gem development workflow.
     s.add_development_dependency 'gem_polisher', '~>0.4' # Change to latest available version!
   end
 ```
+
 * Create the version file accordingly. Eg:
+
 ```ruby
   class My
     class Gem
@@ -36,24 +39,30 @@ This Gem provides Rake tasks to assist Ruby Gem development workflow.
     end
   end
 ```
+
 * Add this to your <tt>Rakefile</tt>:
+
 ```ruby
 require 'gem_polisher'
 GemPolisher.new
 ```
+
 * Create your <tt>Gemfile</tt> and <tt>Gemfile.lock</tt> using [Bundler](http://bundler.io/).
 
 At this point, you have at your disposal some Rake tasks:
+
 ```
 $ bundle exec rake -T
 rake gem:release[type]  # Update bundle, run tests, increment version, build and publish Gem; type can be major, minor or patch
 rake test               # Run all tests
 ```
+
 That you can use to generate new releases. The <tt>gem:release[type]</tt> task will:
 * Make sure you are at master, with everything commited.
 * Update your bundle (<tt>Gemfile.lock</tt>).
 * Execute Rake task <tt>test</tt>.
   * Tip: You can define your own test tasks tied to this. Eg:
+
 ```ruby
     desc "Run RSpec"
     task :rspec do
@@ -61,15 +70,18 @@ That you can use to generate new releases. The <tt>gem:release[type]</tt> task w
     end
     task test: [:rspec]
 ```
+
 * Build your <tt>.gem</tt>.
 * Publish it to https://rubygems.org/.
 
 ## Documentation
 
 Documentation is provided via RDoc. The easiest way to read it:
+
 ```
 gem install --rdoc gem_polisher
 gem install bdoc
 bdoc
 ```
+
 You can read it with <tt>ri</tt> also, of course.
