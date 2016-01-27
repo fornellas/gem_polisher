@@ -178,10 +178,16 @@ RSpec.describe GemPolisher::ReleaseTask  do
       context '#gem_publish' do
         let(:gem_publish_command) { subject.gem_publish_command }
         let(:gem_path) { "#{gem_name}-#{gem_version_str}.gem" }
-        it 'calls gem_publish_command' do
+        before(:example) do
+          FileUtils.touch(gem_path)
+        end
+        fit 'calls gem_publish_command and deletes .gem' do
           expect(subject).to receive(:run)
             .with("#{gem_publish_command} #{gem_path}")
-          subject.send(:gem_publish)
+          expect{subject.send(:gem_publish)}
+            .to change{File.exist?(gem_path)}
+            .from(be_truthy)
+            .to(be_falsey)
         end
       end
     end

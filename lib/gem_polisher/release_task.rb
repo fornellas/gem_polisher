@@ -1,3 +1,5 @@
+require 'fileutils'
+
 class GemPolisher
   # gem:release task
   class ReleaseTask < Task
@@ -66,6 +68,7 @@ class GemPolisher
     # Publishes .gem with gem_publish_command
     def gem_publish
       run("#{gem_publish_command} #{Shellwords.escape(gem_path)}")
+      FileUtils.rm(gem_path)
     end
 
     # :section: Helpers
