@@ -1,3 +1,5 @@
+require 'forwardable'
+
 class GemPolisher
   # Parent class that handles Rake tasks creation
   class Task
