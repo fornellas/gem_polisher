@@ -24,6 +24,7 @@ This Gem provides Rake tasks to assist Ruby Gem development workflow.
   require_relative 'lib/my/gem/with_long_name/version'
   Gem::Specification.new do |s|
     s.version = My::Gem::WithLongName::VERSION
+    s.add_development_dependency 'rake', '~>10.4' # Change to latest available version!
     s.add_development_dependency 'gem_polisher', '~>0.4' # Change to latest available version!
   end
 ```
