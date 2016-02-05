@@ -1,3 +1,6 @@
+require 'bundler'
+Bundler.require
+
 require 'gem_polisher'
 
 gem_name = 'gem_polisher'
