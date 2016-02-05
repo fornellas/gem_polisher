@@ -44,6 +44,9 @@ This Gem provides Rake tasks to assist Ruby Gem development workflow.
 * Add this to your <tt>Rakefile</tt>:
 
 ```ruby
+require 'bundler'
+Bundler.require
+
 require 'gem_polisher'
 GemPolisher.new
 ```
@@ -53,7 +56,7 @@ GemPolisher.new
 At this point, you have at your disposal some Rake tasks:
 
 ```
-$ bundle exec rake -T
+$ rake -T
 rake gem:release[type]  # Update bundle, run tests, increment version, build and publish Gem; type can be major, minor or patch
 rake test               # Run all tests
 ```
