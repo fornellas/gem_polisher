@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gem_polisher (0.4.9)
+    gem_polisher (0.4.10)
       agita (~> 0.1)
       semantic (~> 1.4, >= 1.4.1)
 
