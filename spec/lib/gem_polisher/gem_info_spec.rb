@@ -126,6 +126,17 @@ RSpec.describe GemPolisher::GemInfo do
       expect(subject.semantic_version.to_s).to eq(gem_version_str)
     end
   end
+  context '#gem_version_rb' do
+    let(:gem_require) { 'net/http/digest_auth' }
+    before(:example) do
+      allow_any_instance_of(described_class)
+        .to receive(:gem_require)
+        .and_return(gem_require)
+    end
+    it 'returns version file path' do
+      expect(subject.gem_version_rb).to eq("lib/#{gem_require}/version.rb")
+    end
+  end
   context '#inc_version!' do
     shared_examples :main_class do
       include_context :test_gem

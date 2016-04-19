@@ -79,7 +79,7 @@ class GemPolisher
 
     # Path to Gem's version.rb
     def gem_version_rb
-      "lib/#{gem_name}/version.rb"
+      "lib/#{gem_require}/version.rb"
     end
 
     # Increment version at "lib/#{gem_name}/version.rb".
